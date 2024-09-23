@@ -382,6 +382,7 @@ def decode_latents(vae, latents):
   return image
 
 
+# This class prepares the images and text pairs for training.
 class ConceptDataset(Dataset):
 
   def __init__(
@@ -392,7 +393,7 @@ class ConceptDataset(Dataset):
       repeats=100,
       interpolation="bicubic",
       flip_p=0.5,
-      split="train",
+      split="train", 
       placeholder_token="*",
       center_crop=False,
   ):
@@ -421,6 +422,7 @@ class ConceptDataset(Dataset):
         "lanczos": PIL_INTERPOLATION["lanczos"],
     }[interpolation]
 
+    # Create text prompts by formatting the template with the placeholder token
     self.templates = imagenet_templates_small
     self.flip_transform = transforms.RandomHorizontalFlip(p=self.flip_p)
 
