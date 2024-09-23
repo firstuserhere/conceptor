@@ -1,9 +1,9 @@
 ftfy
 opencv-python==4.7.0.72
 matplotlib
-pytorch=1.13.1
-torchvision=0.14.1
-numpy=1.23.5
+pytorch==1.13.1
+torchvision==0.14.1
+numpy==1.23.5
 diffusers==0.14.0
 transformers==4.26.0
 jupyter
