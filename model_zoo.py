@@ -8,26 +8,31 @@ import torch
 from torchvision import transforms
 from transformers import CLIPModel, CLIPProcessor
 
-
+#This is a base class skeleton for all models in the model zoo
 class ModelZoo:
 
+  # Transform an image input
   def transform(self, image):
     pass
-
+  
+  # Process an image tensor
   def transform_tensor(self, image_tensor):
     pass
 
+  # Calculate the loss between the output and target images
   def calculate_loss(
       self, output, target_images
   ):
     pass
 
+  # Compute the probability of similarity between an output and target images
   def get_probability(
       self, output, target_images
   ):
     pass
 
-
+#This class is a wrapper for the CLIP model
+#The main objective of this class is to compute image features, losses and probabilities using the CLIP model to measure image similarity.
 class CLIPImageSimilarity(ModelZoo):
 
   def __init__(self):
