@@ -35,25 +35,31 @@ class ModelZoo:
 #The main objective of this class is to compute image features, losses and probabilities using the CLIP model to measure image similarity.
 class CLIPImageSimilarity(ModelZoo):
 
+  # The constructor loads a pre-trained CLIP model from Hugging Face
   def __init__(self):
     # initialize classifier
     self.clip_model = CLIPModel.from_pretrained(
         "openai/clip-vit-base-patch32"
     ).to("cuda")
+    # Initialize the CLIP processor, which will pre-process the input images
     self.clip_processor = CLIPProcessor.from_pretrained(
         "openai/clip-vit-base-patch32"
     )
 
+  # Takes in an image, preprocesses it with CLIP processor. Returns a tensor of image pixel values that can be fed into the CLIP model.
+  # The pre-processed image is moved to the GPU
   def transform(self, image):
     images_processed = self.clip_processor(images=image, return_tensors="pt")[
         "pixel_values"
     ].cuda()
     return images_processed
 
+  # Takes in an image tensor and resizes it to 224x224 pixels, which is the input size required for CLIP.
   def transform_tensor(self, image_tensor):
     image_tensor = torch.nn.functional.interpolate(
         image_tensor, size=(224, 224), mode="bicubic", align_corners=False
     )
+    # Normalize the image tensor using CLIP's standard mean and deviation values.
     normalize = transforms.Normalize(
         mean=[0.48145466, 0.4578275, 0.40821073],
         std=[0.26862954, 0.26130258, 0.27577711],
@@ -61,6 +67,7 @@ class CLIPImageSimilarity(ModelZoo):
     image_tensor = normalize(image_tensor)
     return image_tensor
 
+  # Calculate the Cosime similarity loss between the output and target images
   def calculate_loss(
       self, output, target_images
   ):
