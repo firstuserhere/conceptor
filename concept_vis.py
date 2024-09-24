@@ -54,8 +54,12 @@ token_embeds = pipe.text_encoder.get_input_embeddings().weight.detach().requires
 
 # compute w^* and normalize its embedding
 learned_embedding = torch.matmul(alphas, orig_embeddings).flatten()
-norms = [i.norm().item() for i in orig_embeddings]
-avg_norm = np.mean(norms)
+
+# Calculate the average norm from original embeddings
+norms = torch.norm(orig_embeddings, dim=1)
+avg_norm = norms.mean().item()
+
+# Normalize learned_embedding to have the average norm
 learned_embedding /= learned_embedding.norm()
 learned_embedding *= avg_norm
 
